@@ -1,0 +1,17 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: mks-ippool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.1.211-192.168.1.212   # 사용 가능한 IP 범위 입력
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: mks-advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - mks-ippool

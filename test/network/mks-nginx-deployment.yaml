@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mks-nginx
+  namespace: mks-basic
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mks-nginx
+  template:
+    metadata:
+      labels:
+        app: mks-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.23
+        command: ["/bin/sh", "-c", "sleep 3600"]
+
+        # 방법 1: ConfigMap과 Secret을 환경 변수로 주입
+        envFrom:
+        - configMapRef:
+            name: mks-config  # 참조할 ConfigMap 이름
+        - secretRef:
+            name: mks-secret   # 참조할 Secret 이름
+
+        # 방법 2: ConfigMap과 Secret을 볼륨(파일)으로 마운트
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config  # 컨테이너 내부에 /etc/config 디렉토리로 마운트
+          readOnly: true
+        - name: secret-volume
+          mountPath: /etc/secret  # 컨테이너 내부에 /etc/secret 디렉토리로 마운트
+          readOnly: true
+
+      # 사용할 볼륨 정의
+      volumes:
+      - name: config-volume
+        configMap:
+          name: mks-config  # 참조할 ConfigMap 이름
+      - name: secret-volume
+        secret:
+          secretName: mks-secret # 참조할 Secret 이름

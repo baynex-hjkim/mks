@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-wp-ingress
+  namespace: wordpress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+spec:
+  tls:
+  - hosts:
+    - mywp.local
+    secretName: my-wp-tls-secret
+  rules:
+  - host: mywp.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-wp-wordpress
+            port:
+              number: 80
