@@ -1,3 +1,3 @@
 #!/bin/bash
 
-kubectl apply -f ~/mks/test/manifests/nginx-deployment.yaml
+kubectl apply -f test/manifests/nginx-deployment.yaml
