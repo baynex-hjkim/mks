@@ -1,0 +1,22 @@
+name: Deploy to Morpheus via Self-Hosted Runner
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  trigger-internal-morpheus:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Trigger Morpheus Job
+        run: |
+          echo "Triggering Morpheus Job from Internal Network..."
+          
+          curl -k --request PUT \
+            --url "https://hjkim-morpheus.test.local/api/jobs/717/execute" \
+            --header 'accept: application/json' \
+            --header "authorization: Bearer ${{ secrets.MORPHEUS_TOKEN }}"
