@@ -4,7 +4,7 @@ metadata:
   name: ci-cd-test-nginx
   namespace: default
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: ci-cd-test
